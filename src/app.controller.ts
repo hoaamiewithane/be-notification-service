@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
@@ -10,5 +10,10 @@ export class AppController {
   sendMail() {
     console.log('vo day');
     return this.appService.sendMail();
+  }
+  @EventPattern('get_user')
+  getUser(data: any) {
+    console.log('data', data);
+    return 'qwe';
   }
 }
