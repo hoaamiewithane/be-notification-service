@@ -3,12 +3,10 @@ import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class AppService {
   constructor(private readonly mailService: MailerService) {}
-  getHello(): string {
-    return 'Hello World!';
-  }
-  sendMail() {
+
+  sendMail(data: any) {
     this.mailService.sendMail({
-      to: 'nguyendanghoaa@gmail.com',
+      to: data.email,
       from: 'hoaforwork@gmail.com',
       subject: 'hello',
       text: 'hello',
