@@ -12,7 +12,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         secure: true,
         auth: {
           user: 'hoaforwork@gmail.com',
-          pass: 'nguginoi',
+          pass: 'qlyi erld qema hyxl',
         },
       },
     }),
