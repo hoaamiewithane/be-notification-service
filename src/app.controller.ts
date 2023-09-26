@@ -1,28 +1,14 @@
-import { Controller, OnModuleInit, Inject } from '@nestjs/common';
-import {
-  ClientKafka,
-  EventPattern,
-  MessagePattern,
-} from '@nestjs/microservices';
+import { Controller } from '@nestjs/common';
+import { EventPattern } from '@nestjs/microservices';
+import { AppService } from './app.service';
 
 @Controller()
-export class AppController implements OnModuleInit {
-  constructor(
-    @Inject('NOTI_MICROSERVICE') private readonly kafkaClient: ClientKafka,
-  ) {}
-  async onModuleInit() {
-    await this.kafkaClient.connect();
-    this.kafkaClient.subscribeToResponseOf('send_mail_msg');
-  }
+export class AppController {
+  constructor(private readonly appService: AppService) {}
 
   @EventPattern('send_mail')
   sendMail(data: any) {
     console.log('user->noti', data);
-    // return this.appService.sendMail(data);
-  }
-  @MessagePattern('send_mail_msg')
-  sendMailMsg(data: any) {
-    console.log('user->noti123', data);
-    return 'hello';
+    return this.appService.sendMail(data);
   }
 }
