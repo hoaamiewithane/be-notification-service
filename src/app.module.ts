@@ -1,8 +1,8 @@
+import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -17,21 +17,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     }),
-    ClientsModule.register([
-      {
-        name: 'NOTI_MICROSERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'noti-service',
-            brokers: [`localhost:9092`],
-          },
-          consumer: {
-            groupId: 'noti-consumer',
-          },
-        },
-      },
-    ]),
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
