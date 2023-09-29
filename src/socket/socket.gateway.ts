@@ -17,9 +17,6 @@ export class SocketGateway implements OnModuleInit {
     this.server.on('connection', (socket) => {
       console.log(socket.id, ' connected');
     });
-    this.server.on('disconnect', () => {
-      console.log('disconnected');
-    });
   }
 
   @SubscribeMessage('newUser')
