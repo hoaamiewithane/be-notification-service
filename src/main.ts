@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { Partitioners } from 'kafkajs';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -10,17 +11,21 @@ async function bootstrap() {
       options: {
         client: {
           clientId: 'noti-service',
-          brokers: [`localhost:9092`],
+          brokers: [process.env['BROKER_URL'] as string],
         },
         consumer: {
           groupId: 'noti-consumer',
         },
+        producer: {
+          createPartitioner: Partitioners.LegacyPartitioner,
+        },
       },
     },
   );
-  await app.listen().then(() => {
-    console.log('Noti-service started');
-  });
+  await app.listen();
 }
 
-bootstrap();
+bootstrap().then(() => {
+  console.log('Notification service start');
+});
+

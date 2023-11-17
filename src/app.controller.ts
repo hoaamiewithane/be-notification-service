@@ -7,8 +7,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @EventPattern('send_mail')
-  sendMail(data: any) {
-    console.log('user->noti', data);
-    return this.appService.sendMail(data);
+  sendMail(payload: { email: string }) {
+    return this.appService.sendMail(payload);
   }
 }

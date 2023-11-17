@@ -3,9 +3,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SocketModule } from './socket/socket.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+
     MailerModule.forRoot({
       transport: {
         host: 'smtp.gmail.com',
@@ -13,7 +16,7 @@ import { SocketModule } from './socket/socket.module';
         secure: true,
         auth: {
           user: 'hoaforwork@gmail.com',
-          pass: 'qlyi erld qema hyxl',
+          pass: process.env['PASSWORD'],
         },
       },
     }),

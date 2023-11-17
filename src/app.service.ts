@@ -1,6 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { SocketGateway } from './socket/socket.gateway';
+
 @Injectable()
 export class AppService {
   constructor(
@@ -8,19 +9,16 @@ export class AppService {
     private readonly socketGateway: SocketGateway,
   ) {}
 
-  async sendMail(data: any) {
+  async sendMail({ email }: { email: string }) {
     try {
       await this.mailService.sendMail({
-        to: data.email,
+        to: email,
         from: 'hoaforwork@gmail.com',
         subject: 'hello',
         text: 'hello',
-        html: '<b>Welcome</b>',
+        html: `<b>Welcome ${email} to our service</b>`,
       });
-      this.socketGateway.server.emit('onCreateUser', {
-        msg: 'New User',
-        content: data,
-      });
+      this.socketGateway.server.emit('onCreateUser', { email });
     } catch (err) {
       throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }

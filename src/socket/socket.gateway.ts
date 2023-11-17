@@ -13,6 +13,7 @@ export class SocketGateway implements OnModuleInit {
   constructor(private readonly socketService: SocketService) {}
   @WebSocketServer()
   server: Server;
+
   onModuleInit() {
     this.server.on('connection', (socket) => {
       console.log(socket.id, ' connected');
@@ -20,11 +21,7 @@ export class SocketGateway implements OnModuleInit {
   }
 
   @SubscribeMessage('newUser')
-  newUser(@MessageBody() body: any) {
-    console.log('newUser event', body);
-    this.server.emit('onCreateUser', {
-      msg: 'New User',
-      content: body,
-    });
+  newUser(@MessageBody() { email }: { email: string }) {
+    this.server.emit('onCreateUser', { email });
   }
 }
